@@ -1,0 +1,22 @@
+body {
+    background-color:#D3D3D3;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+header, footer {
+    background-color: darkgrey;
+    padding: 20px;
+    text-align: center;
+}
+
+footer {
+    margin-top: auto; /* Push the footer to the bottom */
+}
