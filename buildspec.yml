@@ -7,8 +7,8 @@ env:
 phases:
   pre_build:
     commands:
-      - aws --version
-      - $(aws ecr get-login --no-include-email --region eu-north-1)
+      - aws --versiongi
+      - echo "$(aws ecr get-login-password --region eu-north-1)" | docker login --username AWS --password-stdin 944684220857.dkr.ecr.eu-north-1.amazonaws.com$(aws ecr get-login --no-include-email --region eu-north-1)
   build:
     commands:
       - docker build -t repo/image:$IMAGE_TAG .
