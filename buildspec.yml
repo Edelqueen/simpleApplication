@@ -3,13 +3,15 @@ version: 0.2
 env:
   variables:
     IMAGE_TAG: "latest"
-
+    KUBECONFIG: /root/.kube/config
 phases:
   install:
     commands:
       - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/ 
+      - apt-get update
+      - apt-get install -y awscli
       - aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster
   pre_build:
     commands:
