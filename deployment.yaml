@@ -15,5 +15,6 @@ spec:
       containers:
       - name: my-app
         image: 944684220857.dkr.ecr.eu-north-1.amazonaws.com/mynoderepo:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
