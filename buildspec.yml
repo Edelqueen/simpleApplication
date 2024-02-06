@@ -18,5 +18,5 @@ phases:
       - docker build -t 944684220857.dkr.ecr.eu-north-1.amazonaws.com/mynoderepo:$IMAGE_TAG .
       - docker push 944684220857.dkr.ecr.eu-north-1.amazonaws.com/mynoderepo:$IMAGE_TAG
   post_build:
-  commands:
-    kubectl apply -f deployment.yaml
+    commands:
+      - kubectl apply -f deployment.yaml
