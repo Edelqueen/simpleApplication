@@ -10,7 +10,7 @@ phases:
       - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/ 
-      - aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster
+      #- aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster
   pre_build:
     commands:
       - echo "$(aws ecr get-login-password --region eu-north-1)" | docker login --username AWS --password-stdin 944684220857.dkr.ecr.eu-north-1.amazonaws.com$(aws ecr get-login --no-include-email --region eu-north-1)
