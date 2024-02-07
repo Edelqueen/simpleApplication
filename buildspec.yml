@@ -12,7 +12,7 @@ phases:
       - mv ./kubectl /usr/local/bin/ 
       - apt-get update
       - apt-get install -y awscli
-      - aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster
+      #- aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster
   pre_build:
     commands:
       - echo "$(aws ecr get-login-password --region eu-north-1)" | docker login --username AWS --password-stdin 944684220857.dkr.ecr.eu-north-1.amazonaws.com$(aws ecr get-login --no-include-email --region eu-north-1)
@@ -22,4 +22,4 @@ phases:
       - docker push 944684220857.dkr.ecr.eu-north-1.amazonaws.com/mynoderepo:$IMAGE_TAG
   post_build:
     commands:
-      - kubectl apply --validate=false -f deployment.yaml
+     # - kubectl apply --validate=false -f deployment.yaml
