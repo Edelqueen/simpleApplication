@@ -8,7 +8,7 @@
         <h1>Welcome to <span id="year"></span></h1>
     </header>
     <p> A simple application for demonstrating application development, containerization, CI/CD pipeline, infrastructure provisioning using Terraform, and deployment to the cloud. </p> 
-    <p> Provisioning of AWS VPC and  AWS EKS cluster  using Terraform </p>
+    <p> Provisioning of AWS VPC and AWS EKS cluster using Terraform </p>
     <p> CI/CD pipeline using AWS codepipeline</p> 
     <p> Docker containerization of the application and storing image in AWS ECR</p>
     <p> Deployment of the application to AWS EKS cluster</p>
@@ -37,8 +37,29 @@
             items.forEach(item => {
                 const li = document.createElement('li');
                 li.textContent = item.name;
+                li.appendChild(createUpdateButton(item));
+                li.appendChild(createDeleteButton(item.id));
                 itemsList.appendChild(li);
             });
+        }
+
+        function createUpdateButton(item) {
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.onclick = () => {
+                const newName = prompt('Enter new name:', item.name);
+                if (newName) {
+                    updateItem(item.id, newName);
+                }
+            };
+            return updateButton;
+        }
+
+        function createDeleteButton(id) {
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => deleteItem(id);
+            return deleteButton;
         }
 
         async function addItem() {
@@ -52,6 +73,24 @@
                 body: JSON.stringify(newItem)
             });
             newItemInput.value = '';
+            fetchItems();
+        }
+
+        async function updateItem(id, name) {
+            await fetch(`/items/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name })
+            });
+            fetchItems();
+        }
+
+        async function deleteItem(id) {
+            await fetch(`/items/${id}`, {
+                method: 'DELETE'
+            });
             fetchItems();
         }
 
