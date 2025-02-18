@@ -21,5 +21,29 @@ phases:
       - docker build -t 944684220857.dkr.ecr.eu-north-1.amazonaws.com/mynoderepo:$IMAGE_TAG .
       - docker push 944684220857.dkr.ecr.eu-north-1.amazonaws.com/mynoderepo:$IMAGE_TAG
   post_build:
+    commands:version: 0.2
+
+env:
+  variables:
+    IMAGE_TAG: "latest"
+    KUBECONFIG: /root/.kube/config
+phases:
+  install:
     commands:
+      - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" 
+      - chmod +x ./kubectl
+      - mv ./kubectl /usr/local/bin/ 
+      - apt-get update
+      - apt-get install -y awscli
+  pre_build:
+    commands:
+      - echo "$(aws ecr get-login-password --region ${AWS_REGION})" | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+  build:
+    commands:
+      - docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${IMAGE_TAG} .
+      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${IMAGE_TAG}
+  post_build:
+    commands:
+      # - kubectl apply --validate=false -f deployment.yaml
+
      # - kubectl apply --validate=false -f deployment.yaml

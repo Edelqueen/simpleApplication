@@ -5,18 +5,57 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to 2024</h1>
-        </header>
-        <p> A simple application for demonstrating application development, containerization, CI/CD pipeline, infrastrcture provisioning using terraform and deployment to the cloud. </p> 
-        <p> provisioning of AWS eks cluster using Terraform </p>
-        <p> Deployment of the application to the AWS eks cluster</p>
-        <p> CI/CD pipeline using Github</p> 
-        <p> Docker containerization of the application and storing image in AWS ECR</p>
+        <h1>Welcome to <span id="year"></span></h1>
+    </header>
+    <p> A simple application for demonstrating application development, containerization, CI/CD pipeline, infrastructure provisioning using Terraform, and deployment to the cloud. </p> 
+    <p> Provisioning of AWS VPC and  AWS EKS cluster  using Terraform </p>
+    <p> CI/CD pipeline using AWS codepipeline</p> 
+    <p> Docker containerization of the application and storing image in AWS ECR</p>
+    <p> Deployment of the application to AWS EKS cluster</p>
 
+    <div>
+        <h2>Technologies used</h2>
+        <ul id="items-list"></ul>
+        <input type="text" id="new-item" placeholder="New item">
+        <button onclick="addItem()">Add Item</button>
+    </div>
 
-
-        <footer>
-        <p>Copyright © 2024</p>
+    <footer>
+        <p>Copyright © <span id="footer-year"></span></p>
     </footer>
+
+    <script>
+        const currentYear = new Date().getFullYear();
+        document.getElementById('year').textContent = currentYear;
+        document.getElementById('footer-year').textContent = currentYear;
+
+        async function fetchItems() {
+            const response = await fetch('/items');
+            const items = await response.json();
+            const itemsList = document.getElementById('items-list');
+            itemsList.innerHTML = '';
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.name;
+                itemsList.appendChild(li);
+            });
+        }
+
+        async function addItem() {
+            const newItemInput = document.getElementById('new-item');
+            const newItem = { id: Date.now(), name: newItemInput.value };
+            await fetch('/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newItem)
+            });
+            newItemInput.value = '';
+            fetchItems();
+        }
+
+        fetchItems();
+    </script>
 </body>
 </html>

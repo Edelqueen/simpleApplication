@@ -1,0 +1,67 @@
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- Docker
+- AWS CLI
+- Kubernetes CLI (kubectl)
+
+### Installation
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/yourusername/simple-web-app.git
+    cd simple-web-app
+    ```
+
+2. Install dependencies:
+    ```sh
+    npm install
+    ```
+
+3. Create a [.env](http://_vscodecontentref_/6) file with the following content:
+    ```env
+    AWS_ACCOUNT_ID=your_aws_account_id
+    AWS_REGION=your_aws_region
+    ECR_REPOSITORY_NAME=your_ecr_repository_name
+    ```
+
+### Running the Application
+
+1. Start the application:
+    ```sh
+    npm start
+    ```
+
+2. Open your browser and navigate to `http://localhost:5005`.
+
+### Docker
+
+1. Build the Docker image:
+    ```sh
+    docker build -t your_docker_image_name .
+    ```
+
+2. Run the Docker container:
+    ```sh
+    docker run -p 5005:5005 your_docker_image_name
+    ```
+
+### CI/CD Pipeline
+
+The CI/CD pipeline is configured in [buildspec.yml](http://_vscodecontentref_/7) for AWS CodeBuild. It builds the Docker image and pushes it to AWS ECR.
+
+### Kubernetes Deployment
+
+The Kubernetes deployment configuration is in [deployment.yaml](http://_vscodecontentref_/8). It deploys the application to an AWS EKS cluster.
+
+1. Apply the deployment:
+    ```sh
+    kubectl apply -f deployment.yaml
+    ```
+
+## License
+
+This project is licensed under the MIT License.
