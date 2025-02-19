@@ -12,8 +12,8 @@
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/simple-web-app.git
-    cd simple-web-app
+    git clone repo 
+    cd simpleApplication
     ```
 
 2. Install dependencies:
@@ -21,7 +21,7 @@
     npm install
     ```
 
-3. Create a [.env](http://_vscodecontentref_/6) file with the following content:
+3. Create a .env file 
     ```env
     AWS_ACCOUNT_ID=your_aws_account_id
     AWS_REGION=your_aws_region
