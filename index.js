@@ -3,7 +3,7 @@ const redis = require('redis');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5012;
+const PORT = process.env.PORT || 2019;
 
 // Middleware
 app.use(express.json());
@@ -19,7 +19,7 @@ const client = redis.createClient({
 client.on('error', (err) => console.error('Redis Client Error:', err));
 client.on('connect', () => console.log('Redis Client Connected'));
 client.on('ready', () => console.log('Redis Client Ready'));
-client.on('end', () => console.log('Redis Client Connection Ended'));
+client.on('end-session', () => console.log('Redis Client Connection session'));
 
 // Promisify Redis commands
 const getAsync = client.get.bind(client);
@@ -52,7 +52,7 @@ app.get('/ping', (req, res) => {
 
 // Redis test endpoint
 app.get('/test-redis', async (req, res) => {
-  console.log('Test-redis endpoint hit');
+  console.log('Test-redis test started');
   try {
     if (!client.isReady) {
       console.log('Redis client not ready');
