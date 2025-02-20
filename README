@@ -12,7 +12,7 @@
 
 1. Clone the repository:
     ```sh
-    git clone repo 
+    git clone <repository_url>
     cd simpleApplication
     ```
 
@@ -21,11 +21,14 @@
     npm install
     ```
 
-3. Create a .env file 
+3. Create a [.env](http://_vscodecontentref_/2) file in the root directory with the following content:
     ```env
     AWS_ACCOUNT_ID=your_aws_account_id
     AWS_REGION=your_aws_region
     ECR_REPOSITORY_NAME=your_ecr_repository_name
+    REDIS_HOST=your_redis_host
+    REDIS_PORT=your_redis_port
+    REDIS_PASSWORD=your_redis_password
     ```
 
 ### Running the Application
@@ -35,7 +38,7 @@
     npm start
     ```
 
-2. Open your browser and navigate to `http://localhost:5005`.
+2. Open your browser and navigate to `http://localhost:2019`.
 
 ### Docker
 
@@ -46,22 +49,27 @@
 
 2. Run the Docker container:
     ```sh
-    docker run -p 5005:5005 your_docker_image_name
+    docker run -p 2019:2019 your_docker_image_name
     ```
 
 ### CI/CD Pipeline
 
-The CI/CD pipeline is configured in [buildspec.yml](http://_vscodecontentref_/7) for AWS CodeBuild. It builds the Docker image and pushes it to AWS ECR.
+The CI/CD pipeline is configured in [buildspec.yml] for AWS CodeBuild. It builds the Docker image and pushes it to AWS ECR.
 
 ### Kubernetes Deployment
 
-The Kubernetes deployment configuration is in [deployment.yaml](http://_vscodecontentref_/8). It deploys the application to an AWS EKS cluster.
+The Kubernetes deployment configuration is in [deployment.yaml]. It deploys the application to an AWS EKS cluster.
 
 1. Apply the deployment:
-    ```sh
-    kubectl apply -f deployment.yaml
+    
+```sh    kubectl apply -f deployment.yaml
     ```
 
-## License
+### Testing
 
-This project is licensed under the MIT License.
+1. Run the tests:
+    ```sh
+    npm test
+    ```
+
+### Project Structure
