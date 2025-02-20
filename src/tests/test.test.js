@@ -7,7 +7,7 @@ const { client } = require('../redisClient');
 const app = express();
 app.use('/', testRouter);
 
-// Setup and teardown
+// Test redis connection
 beforeAll(async () => {
   try {
     await client.connect();
