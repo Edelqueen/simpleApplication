@@ -1,7 +1,7 @@
 const express = require('express');
 const { client } = require('./redisClient');
 const itemsRouter = require('./routes/items');
-const testRouter = require('./routes/test');
+const testRouter = require('./routes/redis-check');
 
 const app = express();
 const PORT = process.env.PORT || 2019;
