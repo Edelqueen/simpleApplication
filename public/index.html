@@ -14,7 +14,7 @@
     <p> Deployment of the application to AWS EKS cluster</p>
 
     <div>
-        <h2>Technologies used</h2>
+        <h2>Technologies for platform engineering consultancy</h2>
         <ul id="items-list"></ul>
         <input type="text" id="new-item" placeholder="New item">
         <button onclick="addItem()">Add Item</button>
@@ -64,7 +64,11 @@
 
         async function addItem() {
             const newItemInput = document.getElementById('new-item');
-            const newItem = { id: Date.now(), name: newItemInput.value };
+            const newItem = { 
+                name: newItemInput.value,
+                price: 0,  // Adding required price field
+                description: ''
+            };
             await fetch('/items', {
                 method: 'POST',
                 headers: {
