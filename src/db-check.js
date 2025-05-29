@@ -25,33 +25,33 @@ router.get('/health', async (req, res) => {
 // Test database operations
 router.get('/test', async (req, res) => {
   try {
-    // Create a test table if it doesn't exist
-    await dbAsync.run(`
-      CREATE TABLE IF NOT EXISTS db_test (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        test_value TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
+    // Check if the test table exists
+    const tableExists = await dbAsync.get(`
+      SELECT name FROM sqlite_master WHERE type='table' AND name='test_table'
     `);
-    
+
+    if (!tableExists) {
+      throw new Error('Test table does not exist');
+    }
+
     // Insert a test record
     const testValue = `test-${Date.now()}`;
-    await dbAsync.run('INSERT INTO db_test (test_value) VALUES (?)', [testValue]);
-    
+    await dbAsync.run('INSERT INTO test_table (test_value) VALUES (?)', [testValue]);
+
     // Retrieve the test record
-    const result = await dbAsync.get('SELECT * FROM db_test ORDER BY id DESC LIMIT 1');
-    
+    const result = await dbAsync.get('SELECT * FROM test_table ORDER BY id DESC LIMIT 1');
+
     res.json({
       status: 'ok',
       message: 'SQLite database is working properly',
-      test_record: result
+      test_record: result,
     });
   } catch (error) {
     console.error('Database test error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       status: 'error',
       message: 'Database test failed',
-      error: error.message
+      error: error.message,
     });
   }
 });

@@ -16,8 +16,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
       CREATE TABLE IF NOT EXISTS items (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
-        price REAL NOT NULL,
-        description TEXT
+        description TEXT,
+        category TEXT,  -- Example of a new column
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
   }

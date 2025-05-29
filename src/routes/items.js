@@ -6,13 +6,11 @@ const { dbAsync } = require('../sqliteDb');
 // Create item
 router.post('/', async (req, res) => {
   try {
-    const { name, price, description } = req.body;
-    
+    const { name, description, category } = req.body;
+
     // Validate required fields
-    if (!name || price === undefined) {
-      return res.status(400).json({ 
-        error: 'Name and price are required fields' 
-      });
+    if (!name || !description || !category) {
+      return res.status(400).json({ error: 'Name, description, and category are required fields' });
     }
 
     // Create new item
@@ -20,17 +18,16 @@ router.post('/', async (req, res) => {
     const item = {
       id,
       name,
-      price,
-      description: description || ''
+      description,
+      category
     };
 
     // Store in SQLite DB
     await dbAsync.run(
-      'INSERT INTO items (id, name, price, description) VALUES (?, ?, ?, ?)',
-      [id, name, price, item.description]
+      'INSERT INTO items (id, name, description, category) VALUES (?, ?, ?, ?)',
+      [id, name, description, category]
     );
-    
-    // Return created item
+
     res.status(201).json(item);
   } catch (error) {
     console.error('Error creating item:', error);
@@ -70,30 +67,30 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, price, description } = req.body;
-    
+    const { name, description, category } = req.body;
+
     // Check if item exists
     const existingItem = await dbAsync.get('SELECT * FROM items WHERE id = ?', [id]);
     if (!existingItem) {
       return res.status(404).json({ error: 'Item not found' });
     }
-    
+
     // Update item
     const updatedItem = {
       id,
       name: name || existingItem.name,
-      price: price !== undefined ? price : existingItem.price,
-      description: description !== undefined ? description : existingItem.description
+      description: description || existingItem.description,
+      category: category || existingItem.category
     };
-    
+
     await dbAsync.run(
-      'UPDATE items SET name = ?, price = ?, description = ? WHERE id = ?',
-      [updatedItem.name, updatedItem.price, updatedItem.description, id]
+      'UPDATE items SET name = ?, description = ?, category = ? WHERE id = ?',
+      [updatedItem.name, updatedItem.description, updatedItem.category, id]
     );
-    
-    res.json(updatedItem);
+
+    res.status(200).json(updatedItem);
   } catch (error) {
-    console.error('Error updating item:', error);
+    console.error('Error updating item:', error); // Log the error details
     res.status(500).json({ error: 'Error updating item' });
   }
 });
