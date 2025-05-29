@@ -33,8 +33,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Trivy
-      run: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+      run: |
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+        sudo mv trivy /usr/local/bin/trivy
     - name: Scan Docker Image
-      run: ./trivy image simple-application:sqlite
+      run: trivy image simple-application:sqlite
     - name: Scan Kubernetes Manifests
-      run: ./trivy k8s --report all --file simple-app/templates/deployment.yaml
+      run: trivy k8s --report all --file simple-app/templates/deployment.yaml
