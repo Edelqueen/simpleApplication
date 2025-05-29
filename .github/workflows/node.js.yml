@@ -11,9 +11,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -37,6 +35,6 @@ jobs:
     - name: Install Trivy
       run: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
     - name: Scan Docker Image
-      run: trivy image simple-application:sqlite
+      run: ./trivy image simple-application:sqlite
     - name: Scan Kubernetes Manifests
-      run: trivy k8s --report all --file simple-app/templates/deployment.yaml
+      run: ./trivy k8s --report all --file simple-app/templates/deployment.yaml
