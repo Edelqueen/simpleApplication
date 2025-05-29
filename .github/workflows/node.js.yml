@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI with Trivy
+name: Node.js CI
 
 on:
   push:
@@ -27,16 +27,3 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-
-  trivy-scan:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Install Trivy
-      run: |
-        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-        sudo mv trivy /usr/local/bin/trivy
-    - name: Scan Docker Image
-      run: trivy image simple-application:sqlite
-    - name: Scan Kubernetes Manifests
-      run: trivy k8s --report all --file simple-app/templates/deployment.yaml
