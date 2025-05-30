@@ -2,6 +2,8 @@
 
 This is a simple application that uses SQLite3 as the main database.
 
+---
+
 ## Setup
 
 ### Prerequisites
@@ -10,7 +12,25 @@ This is a simple application that uses SQLite3 as the main database.
 - Docker
 - Minikube
 - Kubernetes CLI (`kubectl`)
-- Helm   
+- Helm
+- Rancher (for Kubernetes cluster management)
+
+---
+
+## Rancher Setup and Minikube Registration
+
+### Rancher Setup in WSL
+
+#### Prerequisites
+- **WSL 2** installed on your Windows machine.
+- **Docker Desktop** installed and configured to work with WSL 2.
+
+#### Steps to Install Rancher
+1. **Start Docker Desktop**:
+   Ensure Docker Desktop is running and configured to use WSL 2.
+
+2. **Access Rancher**:
+   Open your browser and navigate to:
 
 ### Installation
 
@@ -79,7 +99,100 @@ This is a simple application that uses SQLite3 as the main database.
    Open `simple-app/values.yaml` and set `replicaCount` to the desired number of replicas:
    ```yaml
    replicaCount: 3
+
+   
    ```
+```markdown
+
+# Simple Application with SQLite3
+
+This is a simple application that uses SQLite3 as the main database.
+
+---
+
+## Setup
+
+### Prerequisites
+
+- Node.js
+- Docker
+- Minikube
+- Kubernetes CLI (`kubectl`)
+- Helm
+- Rancher (for Kubernetes cluster management)
+
+---
+
+## Rancher Setup and Minikube Registration
+
+### Rancher Setup in WSL
+
+#### Prerequisites
+- **WSL 2** installed on your Windows machine.
+- **Docker Desktop** installed and configured to work with WSL 2.
+
+#### Steps to Install Rancher
+1. **Start Docker Desktop**:
+   Ensure Docker Desktop is running and configured to use WSL 2.
+
+2. **Install Rancher using Docker**:
+
+
+3. **Access Rancher**:
+   Open your browser and navigate to `https://localhost`
+   - Accept the self-signed certificate
+   - Set password for the admin user
+   - Save the password in a secure location
+
+4. **Register Minikube Cluster**:
+   ```sh
+   # Get the registration command from Rancher UI
+   # Go to Clusters > Add Cluster > Import Existing
+   # Copy and run the kubectl command provided
+n
+# Simple Application with SQLite3
+
+This is a simple application that uses SQLite3 as the main database.
+
+---
+
+## Setup
+
+### Prerequisites
+
+- Node.js
+- Docker
+- Minikube
+- Kubernetes CLI (`kubectl`)
+- Helm
+- Rancher (for Kubernetes cluster management)
+
+---
+
+## Rancher Setup and Minikube Registration
+
+### Rancher Setup in WSL
+
+#### Prerequisites
+- **WSL 2** installed on your Windows machine.
+- **Docker Desktop** installed and configured to work with WSL 2.
+
+#### Steps to Install Rancher
+1. **Start Docker Desktop**:
+   Ensure Docker Desktop is running and configured to use WSL 2.
+
+2. **Install Rancher using Docker**:
+
+3. **Access Rancher**:
+   Open your browser and navigate to `https://localhost`
+   - Accept the self-signed certificate
+   - Set a strong password for the admin user
+   - Save the password in a secure location
+
+4. **Register Minikube Cluster**:
+   ```sh
+   # Get the registration command from Rancher UI
+   # Go to Clusters > Add Cluster > Import Existing
 
 2. Apply the updated Helm chart:
    ```sh
@@ -121,8 +234,6 @@ This is a simple application that uses SQLite3 as the main database.
    ```sh
    npm test
    ```
-
-
 
 ### Summary
 
