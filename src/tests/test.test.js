@@ -1,52 +1,51 @@
-// src/tests/test.test.js
 const request = require('supertest');
 const express = require('express');
-const testRouter = require('../routes/redis-check');
-const { client } = require('../redisClient');
+const dbCheckRouter = require('../db-check');
+const { db, dbAsync } = require('../sqliteDb'); // Import `db`
 
 const app = express();
-app.use('/', testRouter);
+app.use('/db', dbCheckRouter);
 
-// Test redis connection
-beforeAll(async () => {
-  try {
-    await client.connect();
-    console.log('Connected to Redis Cloud for testing');
-  } catch (error) {
-    console.error('Error connecting to Redis Cloud:', error);
-    throw error;
-  }
-});
+describe('SQLite3 Database Endpoints', () => {
+  beforeAll(async () => {
+    // Ensure SQLite database is initialized before tests
+    await dbAsync.run(`
+      CREATE TABLE IF NOT EXISTS test_table (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        test_value TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+  });
 
-afterAll(async () => {
-  try {
-    await client.quit();
-    console.log('Disconnected from Redis Cloud');
-  } catch (error) {
-    console.error('Error disconnecting from Redis:', error);
-  }
-});
+  afterAll(async () => {
+    // Clean up test table after tests
+    await dbAsync.run('DROP TABLE IF EXISTS test_table');
+    db.close(); // Properly close the database connection
+  });
 
-describe('Test Endpoints', () => {
-  // Test ping endpoint
-  describe('GET /ping', () => {
-    it('should return pong', async () => {
-      const response = await request(app)
-        .get('/ping')
-        .expect(200);
-
-      expect(response.text).toBe('pong');
+  describe('GET /db/health', () => {
+    it('should return SQLite database health status', async () => {
+      const response = await request(app).get('/db/health').expect(200);
+      expect(response.body).toHaveProperty('status', 'ok');
+      expect(response.body).toHaveProperty('database', 'sqlite3');
     });
   });
 
-  // Test Redis connection
-  describe('GET /test-redis', () => {
-    it('should successfully test Redis connection', async () => {
-      const response = await request(app)
-        .get('/test-redis')
-        .expect(200);
+  describe('GET /db/test', () => {
+    it('should perform database operations successfully', async () => {
+      const response = await request(app).get('/db/test').expect(200);
+      expect(response.body).toHaveProperty('status', 'ok');
+      expect(response.body).toHaveProperty('test_record');
+      expect(response.body.test_record).toHaveProperty('test_value');
+    });
 
-      expect(response.text).toContain('Redis is reachable');
+    it('should handle database errors gracefully', async () => {
+      // Simulate a database error by dropping the test table
+      await dbAsync.run('DROP TABLE IF EXISTS test_table');
+      const response = await request(app).get('/db/test').expect(500);
+      expect(response.body).toHaveProperty('status', 'error');
+      expect(response.body).toHaveProperty('message', 'Database test failed');
     });
   });
 });

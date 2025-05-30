@@ -10,7 +10,7 @@ This is a simple application that uses SQLite3 as the main database.
 - Docker
 - Minikube
 - Kubernetes CLI (`kubectl`)
-- Helm
+- Helm   
 
 ### Installation
 
