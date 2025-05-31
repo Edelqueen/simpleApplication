@@ -14,6 +14,7 @@ This is a simple application that uses SQLite3 as the main database.
 - Kubernetes CLI (`kubectl`)
 - Helm
 - Rancher (for Kubernetes cluster management)
+- Trivy 
 
 ---
 
@@ -165,7 +166,8 @@ This is a simple application that uses SQLite3 as the main database.
 - Minikube
 - Kubernetes CLI (`kubectl`)
 - Helm
-- Rancher (for Kubernetes cluster management)
+- Rancher (for Kubernetes cluster management) 
+- Trivy
 
 ---
 
@@ -206,7 +208,41 @@ This is a simple application that uses SQLite3 as the main database.
 
 4. Test the application:
    Access the service URL provided by Minikube and verify that the application is running across multiple replicas.
+ 
+### Adding Trivy for Container Image Scanning
 
+Trivy is a vulnerability scanner for container images, file systems, and Git repositories. It helps identify security issues in your application dependencies and container images.
+
+#### Steps to Use Trivy
+
+1. **Install Trivy**:
+   Follow the installation instructions for your operating system from the [official Trivy documentation](https://aquasecurity.github.io/trivy/).
+
+2. **Scan the Application's Docker Image**:
+   After building the Docker image for the application, use Trivy to scan it:
+   ```sh
+   trivy image simple-application:sqlite
+   ```
+
+3. **Review the Scan Results**:
+   Trivy will output a list of vulnerabilities, categorized by severity (e.g., CRITICAL, HIGH, MEDIUM, LOW). Address the critical and high-severity issues first.
+
+4. **Automate Scanning**:
+   Integrate Trivy into your CI/CD pipeline to ensure that container images are scanned automatically during the build process.
+
+5. **Scan Local Files or Directories**:
+   You can also scan your project directory for vulnerabilities:
+   ```sh
+   trivy fs .
+   ```
+
+6. **Keep Trivy Updated**:
+   Regularly update Trivy to ensure it has the latest vulnerability database:
+   ```sh
+   trivy --update
+   ```
+
+By incorporating Trivy into your workflow, you can enhance the security of your application and container images.
 ### Environment Variables
 
 - `PORT`: The port on which the application will run (default: 2019)
@@ -234,6 +270,7 @@ This is a simple application that uses SQLite3 as the main database.
    ```sh
    npm test
    ```
+
 
 ### Summary
 
