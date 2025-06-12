@@ -23,7 +23,7 @@ This is a simple application that uses SQLite3 as the main database.
 │  │               │     │              │     │                 │     │
 │  │ HTML/CSS/JS   │     │  Node.js +   │     │   SQLite3 +     │     │
 │  │               │     │  Express.js  │     │   Redis Cache   │     │
-│  │ Port: 2019    │     │  Port: 2019  │     │                 │     │
+│  │               │     │              │     │                 │     │
 │  └───────────────┘     └──────────────┘     └─────────────────┘     │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -37,7 +37,7 @@ This is a simple application that uses SQLite3 as the main database.
 │  │               │     │              │     │                 │     │
 │  │ Metrics       │     │ Dashboards & │     │ System Metrics  │     │
 │  │ Collection    │     │ Visualization│     │ (CPU/Memory)    │     │
-│  │ Port: 30000   │     │ Port: 32000  │     │ Port: 9100      │     │
+│  │               │     │              │     │                 │     │
 │  └───────────────┘     └──────────────┘     └─────────────────┘     │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
