@@ -2,10 +2,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { db } = require('./src/sqliteDb');
 const itemsRouter = require('./src/routes/items');
 const dbCheckRouter = require('./src/db-check');
-const fs = require('fs');
+const { db } = require('./src/sqliteDb');
 
 // Simple metrics collection
 let requestCount = 0;
@@ -13,13 +12,6 @@ let requestDuration = [];
 const startTime = Date.now();
 
 const app = express();
-const PORT = process.env.PORT || 2019;
-
-// Ensure data directory exists
-const dataDir = path.resolve(__dirname, 'data');
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
 
 // Metrics middleware
 app.use((req, res, next) => {
@@ -39,15 +31,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware
 app.use(express.json());
 app.use(express.static('public'));
 
-// Routes
 app.use('/items', itemsRouter);
 app.use('/db', dbCheckRouter);
 
-// Health check
+// Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'simple-application' });
 });
@@ -86,8 +76,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+const PORT = process.env.PORT || 2019;
+
 // Start server - bind to 0.0.0.0 to make it accessible externally
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
-  console.log('SQLite database initialized');
 });
