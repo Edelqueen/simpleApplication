@@ -264,6 +264,69 @@ By incorporating Trivy into your workflow, you can enhance the security of your 
 - `GET /db/health`: Check if the SQLite database is connected
 - `GET /db/test`: Test database operations
 
+### Monitoring with Prometheus and Grafana
+
+This application includes a complete monitoring stack with Prometheus for metrics collection and Grafana for visualization.
+
+#### Deploying the Monitoring Stack
+
+1. **Deploy monitoring components**:
+   ```sh
+   chmod +x deploy-monitoring.sh
+   ./deploy-monitoring.sh
+   ```
+
+2. **Verify monitoring deployment**:
+   ```sh
+   kubectl get pods -n monitoring
+   kubectl get services -n monitoring
+   ```
+
+#### Accessing Monitoring Services
+
+After deployment, you can access the monitoring services:
+
+- **Prometheus**: `http://<MINIKUBE_IP>:30000`
+  - Metrics collection and querying interface
+  - View application and system metrics
+
+- **Grafana**: `http://<MINIKUBE_IP>:32000`
+  - Username: `admin`
+  - Password: `admin123`
+  - Pre-configured with Prometheus as data source
+
+To get your Minikube IP:
+```sh
+minikube ip
+```
+
+#### Available Metrics
+
+The application exposes metrics at `/metrics` endpoint including:
+- HTTP request count
+- Average request duration
+- Application uptime
+- Node.js version information
+
+#### Monitoring Features
+
+- **Application Metrics**: Custom metrics from your Node.js application
+- **System Metrics**: CPU, memory, disk usage via Node Exporter
+- **Kubernetes Metrics**: Pod and cluster metrics
+- **Auto-discovery**: Prometheus automatically discovers pods with proper annotations
+
+#### Creating Dashboards
+
+1. Access Grafana at the URL shown after deployment
+2. Login with admin credentials
+3. Create new dashboards or import existing ones
+4. Use PromQL queries to visualize metrics
+
+Example PromQL queries:
+- `http_requests_total` - Total HTTP requests
+- `rate(http_requests_total[5m])` - Request rate per second
+- `http_request_duration_ms` - Average response time
+
 ### Testing
 
 1. Run the tests:
@@ -271,7 +334,6 @@ By incorporating Trivy into your workflow, you can enhance the security of your 
    npm test
    ```
 
-
 ### Summary
 
-This updated `README.md` includes steps for setting up a Minikube cluster, deploying the application using Helm, and scaling the application to multiple replicas. It also provides instructions for testing and accessing the application.
+This updated `README.md` includes steps for setting up a Minikube cluster, deploying the application using Helm, scaling the application to multiple replicas, and monitoring with Prometheus and Grafana. It also provides instructions for testing and accessing the application and monitoring services.

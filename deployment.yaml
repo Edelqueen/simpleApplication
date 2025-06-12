@@ -11,6 +11,10 @@ spec:
     metadata:
       labels:
         app: my-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "2019"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: my-app
