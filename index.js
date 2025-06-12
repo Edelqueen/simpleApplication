@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -77,8 +76,8 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 2019;
+const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 
-// Start server - bind to 0.0.0.0 to make it accessible externally
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+app.listen(PORT, HOST, () => {
+    console.log(`Server running on http://${HOST}:${PORT}`);
 });
