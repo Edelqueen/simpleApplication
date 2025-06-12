@@ -6,7 +6,7 @@ startServer();
 const express = require('express');
 const path = require('path');
 const itemsRouter = require('./src/routes/items');
-const { dbCheck } = require('./src/db-check');
+const dbCheckRouter = require('./src/db-check');
 
 // Simple metrics collection
 let requestCount = 0;
@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/items', itemsRouter);
-app.use('/db', dbCheck);
+app.use('/db', dbCheckRouter);
 
 // Prometheus metrics endpoint
 app.get('/metrics', (req, res) => {
