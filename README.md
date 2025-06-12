@@ -2,6 +2,146 @@
 
 This is a simple application that uses SQLite3 as the main database.
 
+## Application Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                           DEVELOPMENT ENVIRONMENT                    │
+├─────────────────────────────────────────────────────────────────────┤
+│  ┌──────────┐    ┌──────────┐    ┌──────────────┐                   │
+│  │   WSL2   │    │  Docker  │    │   Replit     │                   │
+│  │          │    │ Desktop  │    │     IDE      │                   │
+│  └──────────┘    └──────────┘    └──────────────┘                   │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                          APPLICATION STACK                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌───────────────┐     ┌──────────────┐     ┌─────────────────┐     │
+│  │   Frontend    │────▶│   Backend    │────▶│    Database     │     │
+│  │               │     │              │     │                 │     │
+│  │ HTML/CSS/JS   │     │  Node.js +   │     │   SQLite3 +     │     │
+│  │               │     │  Express.js  │     │   Redis Cache   │     │
+│  │ Port: 2019    │     │  Port: 2019  │     │                 │     │
+│  └───────────────┘     └──────────────┘     └─────────────────┘     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                         MONITORING STACK                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌───────────────┐     ┌──────────────┐     ┌─────────────────┐     │
+│  │  Prometheus   │────▶│   Grafana    │     │ Node Exporter   │     │
+│  │               │     │              │     │                 │     │
+│  │ Metrics       │     │ Dashboards & │     │ System Metrics  │     │
+│  │ Collection    │     │ Visualization│     │ (CPU/Memory)    │     │
+│  │ Port: 30000   │     │ Port: 32000  │     │ Port: 9100      │     │
+│  └───────────────┘     └──────────────┘     └─────────────────┘     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                      KUBERNETES ORCHESTRATION                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌───────────────┐     ┌──────────────┐     ┌─────────────────┐     │
+│  │   Minikube    │────▶│     Helm     │────▶│    Rancher      │     │
+│  │               │     │              │     │                 │     │
+│  │ Local K8s     │     │   Package    │     │  Cluster Mgmt   │     │
+│  │ Cluster       │     │  Management  │     │  & Monitoring   │     │
+│  └───────────────┘     └──────────────┘     └─────────────────┘     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                        SECURITY & QUALITY                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌───────────────┐     ┌──────────────┐     ┌─────────────────┐     │
+│  │    Trivy      │     │   GitHub     │     │     Jest        │     │
+│  │               │     │  Actions     │     │                 │     │
+│  │ Vulnerability │     │   CI/CD      │     │  Unit Testing   │     │
+│  │   Scanner     │     │  Pipeline    │     │   Framework     │     │
+│  └───────────────┘     └──────────────┘     └─────────────────┘     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                          CLOUD DEPLOYMENT                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌───────────────┐     ┌──────────────┐     ┌─────────────────┐     │
+│  │   AWS VPC     │────▶│   AWS EKS    │────▶│   AWS ECR       │     │
+│  │               │     │              │     │                 │     │
+│  │ Infrastructure│     │  Kubernetes  │     │ Container Image │     │
+│  │ (Terraform)   │     │   Cluster    │     │   Registry      │     │
+│  └───────────────┘     └──────────────┘     └─────────────────┘     │
+│                                                                     │
+│  ┌───────────────┐                                                  │
+│  │ CodePipeline  │                                                  │
+│  │               │                                                  │
+│  │   CI/CD       │                                                  │
+│  │  Automation   │                                                  │
+│  └───────────────┘                                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Technology Stack Overview
+
+**Frontend:**
+- HTML5, CSS3, JavaScript (Vanilla)
+- Responsive design with custom styling
+- Real-time item management interface
+
+**Backend:**
+- Node.js runtime environment
+- Express.js web framework
+- RESTful API design
+- Prometheus metrics integration
+
+**Database:**
+- SQLite3 for persistent data storage
+- Redis for caching and session management
+- Database health monitoring endpoints
+
+**Containerization & Orchestration:**
+- Docker for application containerization
+- Kubernetes (Minikube) for local orchestration
+- Helm charts for package management
+- Rancher for cluster management
+
+**Monitoring & Observability:**
+- Prometheus for metrics collection
+- Grafana for data visualization and dashboards
+- Node Exporter for system metrics
+- Custom application metrics
+
+**DevOps & Security:**
+- GitHub Actions for CI/CD automation
+- Trivy for vulnerability scanning
+- Jest for unit testing
+- Docker image optimization
+
+**Cloud Infrastructure:**
+- AWS VPC for network isolation
+- AWS EKS for managed Kubernetes
+- AWS ECR for container registry
+- AWS CodePipeline for deployment automation
+- Terraform for infrastructure as code
+
+### Data Flow
+
+1. **User Request** → Frontend (HTML/CSS/JS)
+2. **API Calls** → Backend (Express.js)
+3. **Data Operations** → SQLite3 Database
+4. **Caching** → Redis Cache
+5. **Metrics Collection** → Prometheus
+6. **Visualization** → Grafana Dashboards
+7. **System Monitoring** → Node Exporter
+
 ---
 
 ## Setup
@@ -14,7 +154,7 @@ This is a simple application that uses SQLite3 as the main database.
 - Kubernetes CLI (`kubectl`)
 - Helm
 - Rancher (for Kubernetes cluster management)
-- Trivy 
+- Trivy
 
 ---
 
@@ -101,100 +241,8 @@ This is a simple application that uses SQLite3 as the main database.
    ```yaml
    replicaCount: 3
 
-   
+
    ```
-```markdown
-
-# Simple Application with SQLite3
-
-This is a simple application that uses SQLite3 as the main database.
-
----
-
-## Setup
-
-### Prerequisites
-
-- Node.js
-- Docker
-- Minikube
-- Kubernetes CLI (`kubectl`)
-- Helm
-- Rancher (for Kubernetes cluster management)
-
----
-
-## Rancher Setup and Minikube Registration
-
-### Rancher Setup in WSL
-
-#### Prerequisites
-- **WSL 2** installed on your Windows machine.
-- **Docker Desktop** installed and configured to work with WSL 2.
-
-#### Steps to Install Rancher
-1. **Start Docker Desktop**:
-   Ensure Docker Desktop is running and configured to use WSL 2.
-
-2. **Install Rancher using Docker**:
-
-
-3. **Access Rancher**:
-   Open your browser and navigate to `https://localhost`
-   - Accept the self-signed certificate
-   - Set password for the admin user
-   - Save the password in a secure location
-
-4. **Register Minikube Cluster**:
-   ```sh
-   # Get the registration command from Rancher UI
-   # Go to Clusters > Add Cluster > Import Existing
-   # Copy and run the kubectl command provided
-n
-# Simple Application with SQLite3
-
-This is a simple application that uses SQLite3 as the main database.
-
----
-
-## Setup
-
-### Prerequisites
-
-- Node.js
-- Docker
-- Minikube
-- Kubernetes CLI (`kubectl`)
-- Helm
-- Rancher (for Kubernetes cluster management) 
-- Trivy
-
----
-
-## Rancher Setup and Minikube Registration
-
-### Rancher Setup in WSL
-
-#### Prerequisites
-- **WSL 2** installed on your Windows machine.
-- **Docker Desktop** installed and configured to work with WSL 2.
-
-#### Steps to Install Rancher
-1. **Start Docker Desktop**:
-   Ensure Docker Desktop is running and configured to use WSL 2.
-
-2. **Install Rancher using Docker**:
-
-3. **Access Rancher**:
-   Open your browser and navigate to `https://localhost`
-   - Accept the self-signed certificate
-   - Set a strong password for the admin user
-   - Save the password in a secure location
-
-4. **Register Minikube Cluster**:
-   ```sh
-   # Get the registration command from Rancher UI
-   # Go to Clusters > Add Cluster > Import Existing
 
 2. Apply the updated Helm chart:
    ```sh
@@ -208,7 +256,7 @@ This is a simple application that uses SQLite3 as the main database.
 
 4. Test the application:
    Access the service URL provided by Minikube and verify that the application is running across multiple replicas.
- 
+
 ### Adding Trivy for Container Image Scanning
 
 Trivy is a vulnerability scanner for container images, file systems, and Git repositories. It helps identify security issues in your application dependencies and container images.
